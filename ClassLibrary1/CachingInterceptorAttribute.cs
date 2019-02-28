@@ -19,6 +19,18 @@
         /// </summary>
         /// <value>The cache key prefix.</value>
         public string CacheKeyPrefix { get; set; } = string.Empty;
+
+
+        /// <summary>
+        /// 支持表达式形式的Key
+        /// </summary>
+        public string Key { get; set; } = string.Empty;
+
+
+        /// <summary>
+        /// 表达形式
+        /// </summary>
+        public string Condition { get; set; } = string.Empty;
     }
 
     /// <summary>
@@ -52,9 +64,7 @@
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true)]
     public class CachingEvictAttribute : CachingInterceptorAttribute
-    {        
-        
-
+    {
         /// <summary>
         /// Gets or sets a value indicating whether is before.
         /// </summary>
