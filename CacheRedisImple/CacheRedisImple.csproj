@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+
+    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dotNews.Comm.RedisHelper" Version="1.0.4" />
+    <PackageReference Include="dotNews.ServiceStack.Redis" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary1\ClassLibrary1.csproj" />
+  </ItemGroup>
+
+  
+
+</Project>

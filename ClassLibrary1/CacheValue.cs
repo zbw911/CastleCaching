@@ -23,7 +23,6 @@ namespace ClassLibrary1
             {
                 ExpiresAt = DateTimeOffset.UtcNow.Add(ts.Value);
             }
-
         }
 
         /// <summary>

@@ -6,9 +6,11 @@ namespace ClassLibrary1
 {
     public interface ICachingProvider
     {
-        object Get(string cacheKey);
+        T Get<T>(string cacheKey);
 
         void Remove(string cacheKey);
-        void Set(string cacheKey, object returnValue, TimeSpan fromSeconds);
+        void Set<T>(string cacheKey, T returnValue, TimeSpan fromSeconds);
     }
+
+
 }

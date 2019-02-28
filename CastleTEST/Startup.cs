@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Caching.Interceptor.Castle;
+using CacheRedisImple;
 using Castle.Facilities.AspNetCore;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 
 using CastleTEST.Controllers;
 using ClassLibrary1;
+using ClassLibrary1.Interceptor;
+using EasyCaching.Demo.Interceptors.dao;
+using EasyCaching.Demo.Interceptors.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -47,9 +50,15 @@ namespace CastleTEST
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             var container = new WindsorContainer();
             container.Register(Component.For<CachingInterceptor>());
+            container.Register(Component.For<ICachingKeyGenerator>().ImplementedBy<DefaultCachingKeyGenerator>());
+            container.Register(Component.For<ICachingProvider>().ImplementedBy<RedisCachingProvider>());
+
+
             container.Register(Component.For<IPerson>().ImplementedBy<Person>().Interceptors<CachingInterceptor>());
+            container.Register(Component.For<IAspectCoreService>().ImplementedBy<AspectCoreService>().Interceptors<CachingInterceptor>());
+            container.Register(Component.For<IDatas>().ImplementedBy<Datas>().Interceptors<CachingInterceptor>());
             container.Register(Component.For<HomeController>().Interceptors<CachingInterceptor>());
-            
+
 
 
 

@@ -1,17 +1,14 @@
-﻿using Caching.Core.Interceptor;
-using ClassLibrary1;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Caching.Core.Interceptor;
+using Castle.DynamicProxy;
 using EasyCaching.Interceptor.Castle;
 
-namespace Caching.Interceptor.Castle
+namespace ClassLibrary1.Interceptor
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading.Tasks;
-
-    using global::Castle.DynamicProxy;
-
     /// <summary>
     /// caching interceptor.
     /// </summary>
@@ -34,7 +31,7 @@ namespace Caching.Interceptor.Castle
                     TypeofTaskResultMethod = new ConcurrentDictionary<Type, MethodInfo>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Caching.Interceptor.Castle.CachingInterceptor"/> class.
+        /// Initializes a new instance of the <see cref="T:ClassLibrary1.Interceptor.CachingInterceptor"/> class.
         /// </summary>
         /// <param name="cacheProvider">Cache provider.</param>
         /// <param name="keyGenerator">Key generator.</param>
@@ -80,7 +77,7 @@ namespace Caching.Interceptor.Castle
 
                 var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
 
-                var cacheValue = (_cacheProvider.Get(cacheKey));
+                var cacheValue = (_cacheProvider.Get<object>(cacheKey));
 
 
                 if (cacheValue != null)
