@@ -1,12 +1,24 @@
 "# CastleCaching" 
 
 
-#´úÂëÖÐÖ÷Ìå²¿·ÖCopy×Ô EasyCaching ÏîÄ¿£¬¶ÔÆä½øÐÐÏàÓ¦µÄ¸ÄÔì¡£
+#ä»£ç ä¸­ä¸»ä½“éƒ¨åˆ†Copyè‡ª EasyCaching é¡¹ç›®ï¼Œå¯¹å…¶è¿›è¡Œç›¸åº”çš„æ”¹é€ ã€‚
 
-  ÒÔÖ§³ÖÀàÐÍÓÚ java spring ÖÐµÄ @cache ×¢½â
-
-
+  ä»¥æ”¯æŒç±»åž‹äºŽ java spring ä¸­çš„ @cache æ³¨è§£
 
 
-#Î´À´
-  À©Õ¹ ×Ô¶¨Òå²ß²ßÂÔÐÎÊ½µÄ»º´æ·½·¨
+
+
+#æœªæ¥
+  æ‰©å±• è‡ªå®šä¹‰ç­–ç­–ç•¥å½¢å¼çš„ç¼“å­˜æ–¹æ³•
+  
+  
+  `
+    [CachingAble(Expiration = 1000000, Key = "(a+2) + b + person.FirstName ", Condition = "a>1")]
+        string keyGetCurrentUtcTime(int a, string b, Person person);
+
+        [CachingPut(CacheKeyPrefix = "AspectCore", Key = "(a+2) + b + person.FirstName ")]
+        string keyPutSomething(int a, string b, Person person);
+
+        [CachingEvict(IsBefore = true, Key = "(a+2) + b + person.FirstName ")]
+        void keyDeleteSomething(int a, string b, Person person);
+  `
