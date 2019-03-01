@@ -48,6 +48,7 @@
         [Route("aspectcoreasync")]
         public async Task<string> AspectcoreAsync(int type = 1)
         {
+
             if (type == 1)
             {
                 return await _aService.GetUtcTimeAsync();

@@ -9,7 +9,7 @@ namespace EasyCaching.Demo.Interceptors.Services
 
     public interface IAspectCoreService //: EasyCaching.Core.Internal.IEasyCaching
     {
-        [CachingAble(Expiration = 10)]
+        [CachingAble(Expiration = 10),]
         string GetCurrentUtcTime();
 
         [CachingPut(CacheKeyPrefix = "AspectCore")]
@@ -73,8 +73,8 @@ namespace EasyCaching.Demo.Interceptors.Services
         {
             //throw new Not
 
-            return null;
-            //return await _datas.GetCurrentUtcTime();
+
+            return await Task.FromResult(System.DateTime.Now.ToString());
         }
 
         public async Task DeleteSomethingAsync(int id)

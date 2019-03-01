@@ -77,11 +77,25 @@ namespace ClassLibrary1.Interceptor
 
                 var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
 
-                var cacheValue = (_cacheProvider.Get<object>(cacheKey));
+                var d1 = typeof(CacheValue<>);
+                Type[] typeArgs = { returnType };
+                var cachevaluetype = d1.MakeGenericType(typeArgs);
+
+                var cacheValue = (_cacheProvider.Get(cacheKey,   cachevaluetype));
+
+                //typeof(CacheValue).GetMethods()
+            
+               
 
 
                 if (cacheValue != null)
                 {
+                    
+
+                    PropertyInfo prop = cachevaluetype.GetProperty("Value");
+
+                    object value = prop.GetValue(cacheValue);
+
                     if (serviceMethod.IsReturnTask())
                     {
                         invocation.ReturnValue =
@@ -89,12 +103,12 @@ namespace ClassLibrary1.Interceptor
                                     t => typeof(Task).GetMethods()
                                     .First(p => p.Name == "FromResult" && p.ContainsGenericParameters)
                                     .MakeGenericMethod(returnType)
-                                    ).Invoke(null, new object[] { cacheValue });
+                                    ).Invoke(null, new object[] { value });
 
                     }
                     else
                     {
-                        invocation.ReturnValue = cacheValue;
+                        invocation.ReturnValue = value;
                     }
                 }
                 else
@@ -108,12 +122,14 @@ namespace ClassLibrary1.Interceptor
                         {
                             //get the result
                             var returnValue = invocation.UnwrapAsyncReturnValue().Result;
-
-                            _cacheProvider.Set(cacheKey, returnValue, TimeSpan.FromSeconds(attribute.Expiration));
+                            var newcacheValue = new CacheValue<object>(returnValue, returnValue != null, TimeSpan.FromSeconds(attribute.Expiration));
+                            _cacheProvider.Set(cacheKey, newcacheValue, TimeSpan.FromSeconds(attribute.Expiration));
                         }
                         else
                         {
-                            _cacheProvider.Set(cacheKey, invocation.ReturnValue, TimeSpan.FromSeconds(attribute.Expiration));
+                            var returnValue = invocation.ReturnValue;
+                            var newcacheValue = new CacheValue<object>(returnValue, returnValue != null, TimeSpan.FromSeconds(attribute.Expiration));
+                            _cacheProvider.Set(cacheKey, newcacheValue, TimeSpan.FromSeconds(attribute.Expiration));
                         }
                     }
 
@@ -143,11 +159,15 @@ namespace ClassLibrary1.Interceptor
                     //get the result
                     var returnValue = invocation.UnwrapAsyncReturnValue().Result;
 
-                    _cacheProvider.Set(cacheKey, returnValue, TimeSpan.FromSeconds(attribute.Expiration));
+                    var cacheValue = new CacheValue<object>(returnValue, returnValue != null, TimeSpan.FromSeconds(attribute.Expiration));
+
+                    _cacheProvider.Set(cacheKey, cacheValue, TimeSpan.FromSeconds(attribute.Expiration));
                 }
                 else
                 {
-                    _cacheProvider.Set(cacheKey, invocation.ReturnValue, TimeSpan.FromSeconds(attribute.Expiration));
+                    var returnValue = invocation.ReturnValue;
+                    var cacheValue = new CacheValue<object>(returnValue, returnValue != null, TimeSpan.FromSeconds(attribute.Expiration));
+                    _cacheProvider.Set(cacheKey, cacheValue, TimeSpan.FromSeconds(attribute.Expiration));
                 }
             }
         }

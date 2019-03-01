@@ -20,6 +20,7 @@ namespace CastleTEST.Controllers
         }
 
 
+        [Caching.Core.Interceptor.CachingAble]
         public IActionResult Index()
         {
             var result = _person.Go(1);
