@@ -43,7 +43,7 @@ namespace Comm.InterceptorCaching
         /// Gets or sets the expiration. The default value is 30 second.
         /// </summary>
         /// <value>The expiration.</value>
-        public int Expiration { get; set; } = 30;
+        public int Expiration { get; set; } = int.MaxValue;
     }
 
     /// <summary>
