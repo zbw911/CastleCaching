@@ -1,4 +1,5 @@
 ﻿using Caching.Core.Interceptor;
+using ClassLibrary1;
 using EasyCaching.Demo.Interceptors.dao;
 
 namespace EasyCaching.Demo.Interceptors.Services
@@ -30,6 +31,17 @@ namespace EasyCaching.Demo.Interceptors.Services
 
         [CachingAble(Expiration = 10)]
         Demo GetDemo(int id);
+
+
+
+        [CachingAble(Expiration = 1000000, Key = "(a+2) + b + person.FirstName ", Condition = "a>1")]
+        string keyGetCurrentUtcTime(int a, string b, Person person);
+
+        [CachingPut(CacheKeyPrefix = "AspectCore", Key = "(a+2) + b + person.FirstName ")]
+        string keyPutSomething(int a, string b, Person person);
+
+        [CachingEvict(IsBefore = true, Key = "(a+2) + b + person.FirstName ")]
+        void keyDeleteSomething(int a, string b, Person person);
     }
 
     public class AspectCoreService : IAspectCoreService
@@ -53,6 +65,21 @@ namespace EasyCaching.Demo.Interceptors.Services
         public Demo GetDemo(int id)
         {
             return _datas.GetDemo(id);
+        }
+
+        public string keyGetCurrentUtcTime(int a, string b, Person person)
+        {
+            return a + b + person.FirstName;
+        }
+
+        public string keyPutSomething(int a, string b, Person person)
+        {
+            return a + b + person.FirstName;
+        }
+
+        public void keyDeleteSomething(int a, string b, Person person)
+        {
+
         }
 
         public Task<Demo> GetDemoAsync(int id)

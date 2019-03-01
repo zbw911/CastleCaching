@@ -15,7 +15,7 @@ namespace CastleTEST.Controllers
 
         public HomeController(IPerson person)
         {
-            var i = 0;
+          
             _person = person;
         }
 

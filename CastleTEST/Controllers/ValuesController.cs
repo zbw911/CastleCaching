@@ -16,6 +16,36 @@
             this._cService = cService;
         }
 
+
+
+        [HttpGet]
+        [Route("keys")]
+        public string keys(int type = 1)
+        {
+            if (type == 1)
+            {
+                return _aService.keyGetCurrentUtcTime(1, "2", new ClassLibrary1.Person { FirstName = "firstname" });
+            }
+            else if (type == 2)
+            {
+                _aService.keyDeleteSomething(1, "2", new ClassLibrary1.Person { FirstName = "firstname" });
+                return "ok";
+            }
+            else if (type == 3)
+            {
+                return _aService.keyPutSomething(1, "2", new ClassLibrary1.Person { FirstName = "firstname" });
+            }
+            //else if (type == 4)
+            //{
+            //    var res = _aService.GetDemo(111);
+            //    return $"{res.Id}-{res.Name}-{res.CreateTime}";
+            //}
+            else
+            {
+                return "wait";
+            }
+        }
+
         [HttpGet]
         [Route("aspectcore")]
         public string Aspectcore(int type = 1)

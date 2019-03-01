@@ -48,6 +48,7 @@ namespace ClassLibrary1.Interceptor
         /// <param name="invocation">Invocation.</param>
         public void Intercept(IInvocation invocation)
         {
+
             //Process any early evictions 
             ProcessEvict(invocation, true);
 
@@ -71,27 +72,26 @@ namespace ClassLibrary1.Interceptor
 
             if (serviceMethod.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingAbleAttribute)) is CachingAbleAttribute attribute)
             {
+                if (!CheckCondition(attribute, serviceMethod, invocation.Arguments))
+                {
+                    invocation.Proceed();
+                    return;
+                }
                 var returnType = serviceMethod.IsReturnTask()
                         ? serviceMethod.ReturnType.GetGenericArguments().First()
                         : serviceMethod.ReturnType;
 
-                var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
+                var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute);
 
                 var d1 = typeof(CacheValue<>);
                 Type[] typeArgs = { returnType };
                 var cachevaluetype = d1.MakeGenericType(typeArgs);
 
-                var cacheValue = (_cacheProvider.Get(cacheKey,   cachevaluetype));
-
-                //typeof(CacheValue).GetMethods()
-            
-               
+                var cacheValue = (_cacheProvider.Get(cacheKey, cachevaluetype));
 
 
                 if (cacheValue != null)
                 {
-                    
-
                     PropertyInfo prop = cachevaluetype.GetProperty("Value");
 
                     object value = prop.GetValue(cacheValue);
@@ -142,6 +142,12 @@ namespace ClassLibrary1.Interceptor
             }
         }
 
+
+        private bool CheckCondition(CachingInterceptorAttribute attribute, MethodInfo methodInfo, object[] args)
+        {
+            return new DynamicExparser(attribute.Condition, methodInfo.GetParameters().Select(x => x.Name), args).Parser<bool>();
+        }
+
         /// <summary>
         /// Processes the put.
         /// </summary>
@@ -152,7 +158,12 @@ namespace ClassLibrary1.Interceptor
 
             if (serviceMethod.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingPutAttribute)) is CachingPutAttribute attribute && invocation.ReturnValue != null)
             {
-                var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
+                if (!CheckCondition(attribute, serviceMethod, invocation.Arguments))
+                { 
+                    return;
+                }
+
+                var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute);
 
                 if (serviceMethod.IsReturnTask())
                 {
@@ -183,9 +194,12 @@ namespace ClassLibrary1.Interceptor
 
             if (serviceMethod.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingEvictAttribute)) is CachingEvictAttribute attribute && attribute.IsBefore == isBefore)
             {
-
+                if (!CheckCondition(attribute, serviceMethod, invocation.Arguments))
+                {
+                    return;
+                }
                 //If not all , just remove the cached item by its cachekey.
-                var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute.CacheKeyPrefix);
+                var cacheKey = _keyGenerator.GetCacheKey(serviceMethod, invocation.Arguments, attribute);
 
                 _cacheProvider.Remove(cacheKey);
 

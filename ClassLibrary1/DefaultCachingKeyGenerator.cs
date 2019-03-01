@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Caching.Core.Interceptor;
+using ClassLibrary1.Interceptor;
 
 namespace ClassLibrary1
 {
-    public interface ICachingKeyGenerator
-    {
-        string GetCacheKey(MethodInfo serviceMethod, object[] invocationArguments, string attributeCacheKeyPrefix);
-        string GetCacheKeyPrefix(MethodInfo serviceMethod, string attributeCacheKeyPrefix);
-    }
-
     public class DefaultCachingKeyGenerator : ICachingKeyGenerator
     {
         /// <summary>
@@ -26,9 +22,16 @@ namespace ClassLibrary1
         /// <param name="methodInfo">Method info.</param>
         /// <param name="args">Arguments.</param>
         /// <param name="prefix">Prefix.</param>
-        public string GetCacheKey(MethodInfo methodInfo, object[] args, string prefix)
+        public string GetCacheKey(MethodInfo methodInfo, object[] args, CachingInterceptorAttribute cachingInterceptorAttribute)
         {
-            if (string.IsNullOrWhiteSpace(prefix))
+
+
+            if (!string.IsNullOrEmpty(cachingInterceptorAttribute.Key))
+            {
+                return DynamicExpressKey(methodInfo, args, cachingInterceptorAttribute.Key);
+            }
+
+            if (string.IsNullOrWhiteSpace(cachingInterceptorAttribute.CacheKeyPrefix))
             {
                 var typeName = methodInfo.DeclaringType.Name;
                 var methodName = methodInfo.Name;
@@ -41,8 +44,13 @@ namespace ClassLibrary1
             {
                 var methodArguments = this.FormatArgumentsToPartOfCacheKey(args);
 
-                return this.GenerateCacheKey(string.Empty, prefix, methodArguments);
+                return this.GenerateCacheKey(string.Empty, cachingInterceptorAttribute.CacheKeyPrefix, methodArguments);
             }
+        }
+
+        private string DynamicExpressKey(MethodInfo methodInfo, object[] args, string key)
+        { 
+            return new DynamicExparser(key, methodInfo.GetParameters().Select(x => x.Name), args).Parser<string>();
         }
 
         /// <summary>
@@ -51,9 +59,9 @@ namespace ClassLibrary1
         /// <returns>The cache key prefix.</returns>
         /// <param name="methodInfo">Method info.</param>
         /// <param name="prefix">Prefix.</param>
-        public string GetCacheKeyPrefix(MethodInfo methodInfo, string prefix)
+        public string GetCacheKeyPrefix(MethodInfo methodInfo, CachingInterceptorAttribute cachingInterceptorAttribute)
         {
-            if (string.IsNullOrWhiteSpace(prefix))
+            if (string.IsNullOrWhiteSpace(cachingInterceptorAttribute.CacheKeyPrefix))
             {
                 var typeName = methodInfo.DeclaringType.Name;
                 var methodName = methodInfo.Name;
@@ -62,7 +70,7 @@ namespace ClassLibrary1
             }
             else
             {
-                return this.GenerateCacheKeyPrefix(string.Empty, prefix);
+                return this.GenerateCacheKeyPrefix(string.Empty, cachingInterceptorAttribute.CacheKeyPrefix);
             }
         }
 
@@ -143,4 +151,3 @@ namespace ClassLibrary1
         }
     }
 }
- 

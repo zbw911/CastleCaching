@@ -27,6 +27,7 @@ namespace ClassLibrary1
             var sss = target.Eval("my.Str + myVar");
 
             Console.WriteLine(sss);
+             
 
         }
     }
