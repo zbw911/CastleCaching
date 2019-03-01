@@ -11,7 +11,7 @@ namespace EasyCaching.Demo.Interceptors.Services
 
     public interface IAspectCoreService //: EasyCaching.Core.Internal.IEasyCaching
     {
-        [CachingAble(Expiration = 10),]
+        [CachingAble(Expiration = 100000),]
         string GetCurrentUtcTime();
 
         [CachingPut(CacheKeyPrefix = "AspectCore")]

@@ -86,7 +86,7 @@ namespace Comm.InterceptorCaching.Interceptor
                 Type[] typeArgs = { returnType };
                 var cachevaluetype = d1.MakeGenericType(typeArgs);
 
-                var cacheValue = (_cacheProvider.Get(cacheKey, cachevaluetype));
+                var cacheValue = _cacheProvider.Get(cacheKey, cachevaluetype);
 
 
                 if (cacheValue != null)
@@ -121,13 +121,19 @@ namespace Comm.InterceptorCaching.Interceptor
                         {
                             //get the result
                             var returnValue = invocation.UnwrapAsyncReturnValue().Result;
-                            var newcacheValue = new CacheValue<object>(returnValue, returnValue != null, TimeSpan.FromSeconds(attribute.Expiration));
+                            //var newcacheValue = new CacheValue<object>(returnValue, returnValue != null, TimeSpan.FromSeconds(attribute.Expiration));
+
+                            object newcacheValue = Activator.CreateInstance(cachevaluetype , returnValue, returnValue != null, TimeSpan.FromSeconds(attribute.Expiration));
+
                             _cacheProvider.Set(cacheKey, newcacheValue, TimeSpan.FromSeconds(attribute.Expiration));
                         }
                         else
                         {
                             var returnValue = invocation.ReturnValue;
-                            var newcacheValue = new CacheValue<object>(returnValue, returnValue != null, TimeSpan.FromSeconds(attribute.Expiration));
+                            //var newcacheValue = new CacheValue<object>(returnValue, returnValue != null, TimeSpan.FromSeconds(attribute.Expiration));
+
+                            object newcacheValue = Activator.CreateInstance(cachevaluetype, returnValue, returnValue != null, TimeSpan.FromSeconds(attribute.Expiration));
+
                             _cacheProvider.Set(cacheKey, newcacheValue, TimeSpan.FromSeconds(attribute.Expiration));
                         }
                     }

@@ -1,4 +1,6 @@
+using System.Threading;
 using CacheRedisImple;
+using Castle.CachingCore.Memory;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using ClassLibrary1;
@@ -21,7 +23,8 @@ namespace UnitTestProject1
             this.container = new WindsorContainer();
             container.Register(Component.For<CachingInterceptor>());
             container.Register(Component.For<ICachingKeyGenerator>().ImplementedBy<DefaultCachingKeyGenerator>());
-            container.Register(Component.For<ICachingProvider>().ImplementedBy<RedisCachingProvider>());
+            //container.Register(Component.For<ICachingProvider>().ImplementedBy<RedisCachingProvider>());
+            container.Register(Component.For<ICachingProvider>().ImplementedBy<MemoryCachingProvider>());
 
 
             container.Register(Component.For<IPerson>().ImplementedBy<Person>().Interceptors<CachingInterceptor>());
@@ -35,6 +38,10 @@ namespace UnitTestProject1
         public void TestMethod1()
         {
             var k = container.Resolve<IAspectCoreService>();
+            System.Console.WriteLine(k.GetCurrentUtcTime());
+
+            Thread.Sleep(2 * 1000);
+
             System.Console.WriteLine(k.GetCurrentUtcTime());
         }
     }

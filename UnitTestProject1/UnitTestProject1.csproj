@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BizLibTest\BizLibTest.csproj" />
     <ProjectReference Include="..\CacheRedisImple\CacheRedisImpl.csproj" />
+    <ProjectReference Include="..\Castle.CachingCore.Memory\Castle.CachingCore.Memory.csproj" />
     <ProjectReference Include="..\ClassLibrary1\Castle.CachingCore.csproj" />
   </ItemGroup>
 

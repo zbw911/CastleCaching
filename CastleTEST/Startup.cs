@@ -64,7 +64,7 @@ namespace CastleTEST
              
             // Custom application component registrations, ordering is important here
             RegisterApplicationComponents(services);
-
+            services.AddMemoryCache();
             // Castle Windsor integration, controllers, tag helpers and view components, this should always come after RegisterApplicationComponents
             return services.AddWindsor(container,
                 opts => opts.UseEntryAssembly(typeof(HomeController).Assembly), // <- Recommended
