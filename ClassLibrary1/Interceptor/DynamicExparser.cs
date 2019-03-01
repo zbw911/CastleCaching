@@ -2,7 +2,7 @@
 using System.Linq;
 using DynamicExpresso;
 
-namespace ClassLibrary1
+namespace Comm.InterceptorCaching.Interceptor
 {
     internal class DynamicExparser
     {

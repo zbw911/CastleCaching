@@ -1,12 +1,9 @@
-﻿using Castle.DynamicProxy;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
+using Castle.DynamicProxy;
 
-namespace EasyCaching.Interceptor.Castle
+namespace Comm.InterceptorCaching.Extensions
 {
     public static class ReflectionExtensions
     {
@@ -51,7 +48,7 @@ namespace EasyCaching.Interceptor.Castle
             if (valueTypeInfo.IsTaskWithResult())
             {
                 // Is there better solution to unwrap ?
-                result = (object) (await (dynamic) value);
+                result = (object)(await (dynamic)value);
             }
             else if (value is Task)
             {
@@ -87,7 +84,7 @@ namespace EasyCaching.Interceptor.Castle
             {
                 return true;
             }
-            
+
 
             return false;
         }

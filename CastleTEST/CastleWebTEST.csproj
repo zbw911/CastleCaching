@@ -11,8 +11,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CacheRedisImple\CacheRedisImple.csproj" />
-    <ProjectReference Include="..\ClassLibrary1\ClassLibrary1.csproj" />
+    <ProjectReference Include="..\BizLibTest\BizLibTest.csproj" />
+    <ProjectReference Include="..\CacheRedisImple\CacheRedisImpl.csproj" />
+    <ProjectReference Include="..\ClassLibrary1\Castle.CachingCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="dao\" />
   </ItemGroup>
 
 </Project>

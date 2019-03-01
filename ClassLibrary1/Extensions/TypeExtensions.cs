@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace EasyCaching.Interceptor.Castle
+namespace Comm.InterceptorCaching.Extensions
 {
     public static class TypeExtensions
     {

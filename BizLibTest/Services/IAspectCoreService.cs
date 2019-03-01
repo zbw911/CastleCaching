@@ -1,5 +1,6 @@
-﻿using Caching.Core.Interceptor;
+﻿ 
 using ClassLibrary1;
+using Comm.InterceptorCaching;
 using EasyCaching.Demo.Interceptors.dao;
 
 namespace EasyCaching.Demo.Interceptors.Services

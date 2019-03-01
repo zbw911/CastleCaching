@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>zhangbaowei</Authors>
+    <PackageProjectUrl>https://github.com/zbw911/CastleCaching</PackageProjectUrl>
+    <Description>Castle  .net core  caching , like java spring cache , @cacheing , @cacheable , @cacheEvict ..</Description>
+    <AssemblyName>Comm.InterceptorCaching</AssemblyName>
+    <RootNamespace>Comm.InterceptorCaching</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

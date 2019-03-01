@@ -3,11 +3,10 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Caching.Core.Interceptor;
 using Castle.DynamicProxy;
-using EasyCaching.Interceptor.Castle;
+using Comm.InterceptorCaching.Extensions;
 
-namespace ClassLibrary1.Interceptor
+namespace Comm.InterceptorCaching.Interceptor
 {
     /// <summary>
     /// caching interceptor.
@@ -31,7 +30,7 @@ namespace ClassLibrary1.Interceptor
                     TypeofTaskResultMethod = new ConcurrentDictionary<Type, MethodInfo>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:ClassLibrary1.Interceptor.CachingInterceptor"/> class.
+        /// Initializes a new instance of the <see cref="T:Comm.InterceptorCaching.Interceptor.CachingInterceptor"/> class.
         /// </summary>
         /// <param name="cacheProvider">Cache provider.</param>
         /// <param name="keyGenerator">Key generator.</param>
@@ -145,6 +144,11 @@ namespace ClassLibrary1.Interceptor
 
         private bool CheckCondition(CachingInterceptorAttribute attribute, MethodInfo methodInfo, object[] args)
         {
+            if (string.IsNullOrWhiteSpace(attribute.Condition))
+            {
+                return true;
+            }
+
             return new DynamicExparser(attribute.Condition, methodInfo.GetParameters().Select(x => x.Name), args).Parser<bool>();
         }
 
@@ -159,7 +163,7 @@ namespace ClassLibrary1.Interceptor
             if (serviceMethod.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingPutAttribute)) is CachingPutAttribute attribute && invocation.ReturnValue != null)
             {
                 if (!CheckCondition(attribute, serviceMethod, invocation.Arguments))
-                { 
+                {
                     return;
                 }
 

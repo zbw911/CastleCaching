@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ClassLibrary1;
+ 
+using Comm.InterceptorCaching;
 using News.Comm.RedisHelper;
 
 namespace CacheRedisImple

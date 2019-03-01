@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Caching.Core.Interceptor;
-using ClassLibrary1.Interceptor;
 
-namespace ClassLibrary1
+namespace Comm.InterceptorCaching.Interceptor
 {
     public class DefaultCachingKeyGenerator : ICachingKeyGenerator
     {
@@ -22,11 +20,12 @@ namespace ClassLibrary1
         /// <param name="methodInfo">Method info.</param>
         /// <param name="args">Arguments.</param>
         /// <param name="prefix">Prefix.</param>
+        /// <param name="cachingInterceptorAttribute"></param>
         public string GetCacheKey(MethodInfo methodInfo, object[] args, CachingInterceptorAttribute cachingInterceptorAttribute)
         {
 
 
-            if (!string.IsNullOrEmpty(cachingInterceptorAttribute.Key))
+            if (!string.IsNullOrWhiteSpace(cachingInterceptorAttribute.Key))
             {
                 return DynamicExpressKey(methodInfo, args, cachingInterceptorAttribute.Key);
             }
@@ -53,26 +52,7 @@ namespace ClassLibrary1
             return new DynamicExparser(key, methodInfo.GetParameters().Select(x => x.Name), args).Parser<string>();
         }
 
-        /// <summary>
-        /// Gets the cache key prefix.
-        /// </summary>
-        /// <returns>The cache key prefix.</returns>
-        /// <param name="methodInfo">Method info.</param>
-        /// <param name="prefix">Prefix.</param>
-        public string GetCacheKeyPrefix(MethodInfo methodInfo, CachingInterceptorAttribute cachingInterceptorAttribute)
-        {
-            if (string.IsNullOrWhiteSpace(cachingInterceptorAttribute.CacheKeyPrefix))
-            {
-                var typeName = methodInfo.DeclaringType.Name;
-                var methodName = methodInfo.Name;
-
-                return this.GenerateCacheKeyPrefix(typeName, methodName);
-            }
-            else
-            {
-                return this.GenerateCacheKeyPrefix(string.Empty, cachingInterceptorAttribute.CacheKeyPrefix);
-            }
-        }
+        
 
         /// <summary>
         /// Generates the cache key prefix.

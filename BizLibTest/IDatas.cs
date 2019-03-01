@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Caching.Core.Interceptor;
+using Comm.InterceptorCaching;
 
 
 namespace EasyCaching.Demo.Interceptors.dao

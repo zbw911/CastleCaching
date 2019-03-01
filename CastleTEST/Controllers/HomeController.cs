@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CastleTEST.Models;
 using ClassLibrary1;
+using Comm.InterceptorCaching;
 
 namespace CastleTEST.Controllers
 {
@@ -20,7 +21,7 @@ namespace CastleTEST.Controllers
         }
 
 
-        [Caching.Core.Interceptor.CachingAble]
+        [CachingAble]
         public IActionResult Index()
         {
             var result = _person.Go(1);

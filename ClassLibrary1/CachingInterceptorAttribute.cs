@@ -1,7 +1,7 @@
-﻿namespace Caching.Core.Interceptor
-{
-    using System;
+﻿using System;
 
+namespace Comm.InterceptorCaching
+{
     /// <summary>
     /// caching interceptor attribute.
     /// </summary>

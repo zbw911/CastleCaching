@@ -1,4 +1,5 @@
-﻿using Caching.Core.Interceptor;
+﻿ 
+using Comm.InterceptorCaching;
 
 namespace EasyCaching.Demo.Interceptors.Services
 {    

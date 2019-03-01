@@ -10,7 +10,8 @@ using Castle.Windsor.Installer;
 
 using CastleTEST.Controllers;
 using ClassLibrary1;
-using ClassLibrary1.Interceptor;
+using Comm.InterceptorCaching;
+using Comm.InterceptorCaching.Interceptor;
 using EasyCaching.Demo.Interceptors.dao;
 using EasyCaching.Demo.Interceptors.Services;
 using Microsoft.AspNetCore.Builder;
@@ -60,9 +61,7 @@ namespace CastleTEST
             container.Register(Component.For<IDatas>().ImplementedBy<Datas>().Interceptors<CachingInterceptor>());
             container.Register(Component.For<HomeController>().Interceptors<CachingInterceptor>());
 
-
-
-
+             
             // Custom application component registrations, ordering is important here
             RegisterApplicationComponents(services);
 

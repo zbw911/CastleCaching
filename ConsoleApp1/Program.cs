@@ -1,6 +1,5 @@
 ﻿using System;
-using ClassLibrary1;
-
+  
 namespace ConsoleApp1
 {
     class Program
@@ -13,7 +12,7 @@ namespace ConsoleApp1
             //ClassLibrary1.testWinsor.initWinsor();
             //Console.WriteLine("Hello World!");
 
-            StringExpresss.Test1();
+            //StringExpresss.Test1();
         }
     }
 }
