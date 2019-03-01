@@ -13,6 +13,8 @@
   
   
   `
+  
+  
     [CachingAble(Expiration = 1000000, Key = "(a+2) + b + person.FirstName ", Condition = "a>1")]
         string keyGetCurrentUtcTime(int a, string b, Person person);
 
@@ -21,4 +23,5 @@
 
         [CachingEvict(IsBefore = true, Key = "(a+2) + b + person.FirstName ")]
         void keyDeleteSomething(int a, string b, Person person);
+        
   `
